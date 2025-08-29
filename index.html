@@ -1,0 +1,1326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Full Stack Development Portfolio - CET138</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --accent: #f093fb;
+            --dark: #1a1a2e;
+            --darker: #16213e;
+            --light: #eee;
+            --text: #333;
+            --gradient: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            --glass: rgba(255, 255, 255, 0.1);
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            overflow-x: hidden;
+            background: var(--dark);
+        }
+        /* Light Mode Variables */
+        body.light-mode {
+            --dark: #f0f2f5;
+            --darker: #e4e6ef;
+            --text: #2a2a2a;
+            --glass: rgba(0, 0, 0, 0.05);
+        }
+        /* Animated Background */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #f5576c);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            transition: all 0.5s ease;
+        }
+        body.light-mode .animated-bg {
+            background: linear-gradient(-45deg, #a7c0fd, #c2b0ff, #ffb8e0, #ffb3ba);
+        }
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        /* Floating particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+        body.light-mode .particle {
+            background: rgba(0, 0, 0, 0.3);
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+        /* Theme Toggle Button */
+        .theme-toggle {
+            position: fixed;
+            top: 1.5rem;
+            right: 2rem;
+            z-index: 1002;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            border-radius: 50px;
+            padding: 0.6rem 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+        }
+        body.light-mode .theme-toggle {
+            background: rgba(0, 0, 0, 0.1);
+            color: #2a2a2a;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        body.light-mode .theme-toggle:hover {
+            background: rgba(0, 0, 0, 0.15);
+        }
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+        }
+        nav.scrolled {
+            background: rgba(26, 26, 46, 0.95);
+        }
+        body.light-mode nav {
+            background: rgba(255, 255, 255, 0.8);
+        }
+        body.light-mode nav.scrolled {
+            background: rgba(255, 255, 255, 0.95);
+        }
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+            transition: transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        body.light-mode .logo {
+            color: #2a2a2a;
+        }
+        .logo:hover {
+            transform: scale(1.1);
+        }
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        body.light-mode .nav-links a {
+            color: #2a2a2a;
+        }
+        .nav-links a:focus {
+            outline: 2px solid var(--accent);
+            outline-offset: 4px;
+            border-radius: 4px;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+        .nav-links a:hover::after,
+        .nav-links a:focus::after {
+            width: 100%;
+        }
+        /* Mobile Navigation */
+        .mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        body.light-mode .mobile-toggle {
+            color: #2a2a2a;
+        }
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+            padding: 0 1rem;
+        }
+        body.light-mode .hero {
+            color: #2a2a2a;
+        }
+        .hero-content h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            margin-bottom: 1rem;
+            opacity: 0;
+            animation: slideUp 1s ease 0.5s forwards;
+        }
+        .hero-content p {
+            font-size: clamp(1.2rem, 3vw, 1.5rem);
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: slideUp 1s ease 0.7s forwards;
+        }
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: var(--gradient);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            opacity: 0;
+            animation: slideUp 1s ease 0.9s forwards;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: none;
+            cursor: pointer;
+        }
+        .cta-button:hover,
+        .cta-button:focus {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            outline: none;
+        }
+        @keyframes slideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .hero-content h1,
+        .hero-content p,
+        .cta-button {
+            transform: translateY(50px);
+        }
+        /* Skip to content link for accessibility */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: var(--accent);
+            color: white;
+            padding: 8px;
+            z-index: 10000;
+            text-decoration: none;
+        }
+        .skip-link:focus {
+            top: 0;
+        }
+        /* Section Styles */
+        .section {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
+        }
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .section-title {
+            font-size: clamp(2rem, 5vw, 3rem);
+            text-align: center;
+            margin-bottom: 3rem;
+            color: white;
+            position: relative;
+        }
+        body.light-mode .section-title {
+            color: #2a2a2a;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--gradient);
+            border-radius: 2px;
+        }
+        /* Glass Cards */
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem 0;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        body.light-mode .card {
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+        body.light-mode .card::before {
+            background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.05), transparent);
+        }
+        .card:hover::before {
+            left: 100%;
+        }
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        .card h3 {
+            color: white;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        body.light-mode .card h3 {
+            color: #2a2a2a;
+        }
+        .card p {
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+        body.light-mode .card p {
+            color: #2a2a2a;
+        }
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        /* Code Examples */
+        .code-example {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            position: relative;
+            overflow-x: auto;
+        }
+        body.light-mode .code-example {
+            background: rgba(0, 0, 0, 0.05);
+        }
+        .code-example::before {
+            content: attr(data-lang);
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: var(--accent);
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 5px;
+            font-size: 0.8rem;
+        }
+        .code-example code {
+            color: #00ff88;
+            font-family: 'Courier New', monospace;
+            white-space: pre;
+        }
+        body.light-mode .code-example code {
+            color: #0066cc;
+        }
+        /* Interactive Demos */
+        .demo-container {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            color: var(--text);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        .interactive-button {
+            background: var(--gradient);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            margin: 0.5rem;
+        }
+        .interactive-button:hover,
+        .interactive-button:focus {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            outline: none;
+        }
+        /* Bootstrap Demo Styles */
+        .bootstrap-demo {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            color: var(--text);
+        }
+        .demo-card {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 1rem;
+            margin: 1rem 0;
+            transition: transform 0.3s ease;
+        }
+        .demo-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        /* Footer */
+        footer {
+            background: var(--darker);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            margin-top: 4rem;
+        }
+        body.light-mode footer {
+            background: #e4e6ef;
+            color: #2a2a2a;
+        }
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            text-align: left;
+        }
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+        .footer-section p {
+            margin-bottom: 1rem;
+            opacity: 0.8;
+        }
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .social-links a {
+            color: white;
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+        body.light-mode .social-links a {
+            color: #2a2a2a;
+        }
+        .social-links a:hover {
+            transform: translateY(-5px);
+            color: var(--accent);
+        }
+        .copyright {
+            margin-top: 3rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            opacity: 0.7;
+        }
+        body.light-mode .copyright {
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        /* Back to top button */
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--gradient);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 999;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        .back-to-top:hover,
+        .back-to-top:focus {
+            transform: translateY(-5px);
+            outline: none;
+        }
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                height: 100vh;
+                width: 70%;
+                flex-direction: column;
+                background: var(--darker);
+                padding: 2rem;
+                transition: right 0.3s ease;
+                z-index: 1000;
+                gap: 1.5rem;
+                justify-content: center;
+            }
+            body.light-mode .nav-links {
+                background: #e4e6ef;
+            }
+            .nav-links.active {
+                right: 0;
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
+            }
+            .mobile-toggle {
+                display: block;
+                z-index: 1001;
+            }
+            .theme-toggle {
+                top: 1rem;
+                right: 1rem;
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+            }
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+            .section-title {
+                font-size: 2rem;
+            }
+            .tech-grid {
+                grid-template-columns: 1fr;
+            }
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            .social-links {
+                justify-content: center;
+            }
+        }
+        /* Scroll Indicator */
+        .scroll-indicator {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--gradient);
+            transform-origin: left;
+            transform: scaleX(0);
+            z-index: 1001;
+        }
+        /* Skills Animation */
+        .skill-bar {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+        body.light-mode .skill-bar {
+            background: rgba(0, 0, 0, 0.1);
+        }
+        .skill-progress {
+            height: 30px;
+            background: var(--gradient);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            padding: 0 1rem;
+            color: white;
+            font-weight: bold;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 2s ease;
+        }
+        .skill-progress.animate {
+            transform: scaleX(1);
+        }
+        /* Form improvements */
+        input, textarea, select {
+            font-family: inherit;
+        }
+        input:focus, textarea:focus {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Skip link for accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle" id="themeToggle">
+        <i class="fas fa-moon"></i> <span>Light Mode</span>
+    </button>
+    
+    <!-- Animated Background -->
+    <div class="animated-bg"></div>
+    
+    <!-- Particles -->
+    <div class="particles"></div>
+    
+    <!-- Scroll Indicator -->
+    <div class="scroll-indicator"></div>
+    
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="#home" class="logo">
+                <i class="fas fa-code"></i> Prajwal Gurung's Portfolio
+            </a>
+            <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#fullstack">Full Stack</a></li>
+                <li><a href="#html">HTML</a></li>
+                <li><a href="#css">CSS</a></li>
+                <li><a href="#bootstrap">Bootstrap</a></li>
+                <li><a href="#javascript">JavaScript</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <!-- Back to top button -->
+    <a href="#home" class="back-to-top" id="backToTop" aria-label="Back to top">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+    
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Full Stack Development</h1>
+            <p>CET138 Assignment Portfolio</p>
+            <a href="#fullstack" class="cta-button">Explore My Work</a>
+        </div>
+    </section>
+    
+    <main id="main-content">
+        <!-- Full Stack Development Section -->
+        <section id="fullstack" class="section">
+            <h2 class="section-title">What is Full Stack Development?</h2>
+            <div class="card">
+                <h3><i class="fas fa-layer-group"></i> Complete Web Development</h3>
+                <p>Full stack development involves building both the front-end and back-end of web applications. The front-end refers to what users see and interact with, created with HTML, CSS, JavaScript, and frameworks like React or Angular. The back-end includes servers, databases, and application logic built with technologies like Node.js, Python, or PHP. Full stack developers connect these layers to provide a seamless, functional web experience.</p>
+                <p>The front-end focuses on user interface design and responsiveness, ensuring the website looks good on all devices. The back-end manages data, security, business rules, and background processing, ensuring reliability and performance.</p>
+                <p>Being a full stack developer means understanding how these technologies work together, enabling you to contribute across the entire development cycle from design to deployment.</p>
+                <div class="tech-grid">
+                    <div class="demo-card">
+                        <h4><i class="fas fa-desktop"></i> Frontend (Client-Side)</h4>
+                        <p>UI and UX crafted with HTML, CSS, JavaScript, plus frameworks that simplify complex interfaces and state management.</p>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="90">HTML/CSS - 90%</div>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="85">JavaScript - 85%</div>
+                        </div>
+                    </div>
+                    <div class="demo-card">
+                        <h4><i class="fas fa-server"></i> Backend (Server-Side)</h4>
+                        <p>Server-side logic, database management, API development, and security to power applications behind the scenes.</p>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="80">Node.js - 80%</div>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="75">Database - 75%</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="code-example" data-lang="Tech Stack">
+                    <code>Popular Full Stack Technologies:
+MEAN Stack: MongoDB + Express.js + Angular + Node.js
+MERN Stack: MongoDB + Express.js + React + Node.js
+LAMP Stack: Linux + Apache + MySQL + PHP
+Django Stack: Python + Django + PostgreSQL</code>
+                </div>
+            </div>
+        </section>
+        
+        <!-- HTML Section -->
+        <section id="html" class="section">
+            <h2 class="section-title">HTML - HyperText Markup Language</h2>
+            <div class="card">
+                <h3><i class="fab fa-html5"></i> Semantic HTML Structure</h3>
+                <p>HTML structures content on the web using elements like headings, paragraphs, lists, images, and links. It provides the foundation for web pages, allowing browsers to display text and multimedia correctly.</p>
+                <p>Semantic HTML uses elements that clearly describe their meaning, such as <code>&lt;header&gt;</code>, <code>&lt;article&gt;</code>, and <code>&lt;footer&gt;</code>. It improves accessibility for users with disabilities and enhances SEO by helping search engines understand page content.</p>
+                <p>Forms in HTML gather input from users, which can be processed via back-end applications. Proper use of attributes like <code>required</code> and input types enhances user experience and data quality.</p>
+                <div class="code-example" data-lang="HTML">
+                    <code>&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;Semantic HTML Example&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;header&gt;
+        &lt;nav&gt;
+            &lt;ul&gt;
+                &lt;li&gt;&lt;a href="#home"&gt;Home&lt;/a&gt;&lt;/li&gt;
+                &lt;li&gt;&lt;a href="#about"&gt;About&lt;/a&gt;&lt;/li&gt;
+            &lt;/ul&gt;
+        &lt;/nav&gt;
+    &lt;/header&gt;
+
+    &lt;main&gt;
+        &lt;article&gt;
+            &lt;h1&gt;Article Title&lt;/h1&gt;
+            &lt;p&gt;Article content with proper semantic structure.&lt;/p&gt;
+        &lt;/article&gt;
+    &lt;/main&gt;
+
+    &lt;footer&gt;
+        &lt;p&gt;&copy; 2025 My Website&lt;/p&gt;
+    &lt;/footer&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code>
+                </div>
+                <div class="demo-container">
+                    <h4>Interactive HTML Form Demo</h4>
+                    <form id="htmlForm">
+                        <div style="margin-bottom: 1rem;">
+                            <label for="name">Name:</label><br>
+                            <input type="text" id="name" name="name" required style="padding: 0.5rem; width: 100%; max-width: 300px; border: 1px solid #ccc; border-radius: 5px;">
+                        </div>
+                        <div style="margin-bottom: 1rem;">
+                            <label for="email">Email:</label><br>
+                            <input type="email" id="email" name="email" required style="padding: 0.5rem; width: 100%; max-width: 300px; border: 1px solid #ccc; border-radius: 5px;">
+                        </div>
+                        <div style="margin-bottom: 1rem;">
+                            <label for="message">Message:</label><br>
+                            <textarea id="message" name="message" rows="4" style="padding: 0.5rem; width: 100%; max-width: 300px; border: 1px solid #ccc; border-radius: 5px;"></textarea>
+                        </div>
+                        <button type="submit" class="interactive-button">Submit Form</button>
+                    </form>
+                    <div id="formResult" style="margin-top: 1rem; padding: 1rem; background: #f0f8ff; border-radius: 5px; display: none;"></div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- CSS Section -->
+        <section id="css" class="section">
+            <h2 class="section-title">CSS - Cascading Style Sheets</h2>
+            <div class="card">
+                <h3><i class="fab fa-css3-alt"></i> Advanced Styling & Animations</h3>
+                <p>CSS styles the HTML content, controlling visual aspects such as colors, fonts, spacing, and layout. Modern CSS introduces powerful tools like Flexbox and Grid, which allow developers to create complex, responsive designs easily.</p>
+                <p>Animations and transitions enhance user experiences by smoothing visual changes and providing feedback to user interactions without needing JavaScript.</p>
+                <p>Using CSS effectively means ensuring websites are visually appealing, accessible, and adaptable across various devices and screen sizes.</p>
+                <div class="code-example" data-lang="CSS">
+                    <code>/* Modern CSS with Grid and Animations */
+.container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    animation: fadeIn 1s ease-in-out;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 15px;
+    padding: 2rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+}</code>
+                </div>
+                <div class="demo-container">
+                    <h4>CSS Animation Demo</h4>
+                    <div id="cssDemo" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem;">
+                        <div class="demo-box" style="height: 100px; background: linear-gradient(45deg, #ff6b6b, #4ecdc4); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; cursor: pointer; transition: all 0.3s ease;">
+                            Hover Me!
+                        </div>
+                        <div class="demo-box" style="height: 100px; background: linear-gradient(45deg, #a8e6cf, #dcedc1); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #333; font-weight: bold; cursor: pointer; transition: all 0.3s ease;">
+                            Click Me!
+                        </div>
+                        <div class="demo-box" style="height: 100px; background: linear-gradient(45deg, #ffd93d, #ff6b6b); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; cursor: pointer; transition: all 0.3s ease;">
+                            Animate!
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Bootstrap Section -->
+        <section id="bootstrap" class="section">
+            <h2 class="section-title">Bootstrap Framework</h2>
+            <div class="card">
+                <h3><i class="fab fa-bootstrap"></i> Responsive Design Made Easy</h3>
+                <p>Bootstrap is a CSS framework offering pre-built components and a flexible grid system, enabling rapid and consistent responsive web development.</p>
+                <p>Using Bootstrap components like buttons, cards, navbars, and modals, developers can build professional interfaces efficiently while maintaining cross-browser compatibility.</p>
+                <p>The grid system automatically adapts layouts to different screen sizes, simplifying mobile-first design.</p>
+                <div class="code-example" data-lang="Bootstrap">
+                    <code>&lt;!-- Bootstrap Grid System --&gt;
+&lt;div class="container"&gt;
+    &lt;div class="row"&gt;
+        &lt;div class="col-lg-4 col-md-6 col-sm-12"&gt;
+            &lt;div class="card"&gt;
+                &lt;div class="card-body"&gt;
+                    &lt;h5 class="card-title"&gt;Card Title&lt;/h5&gt;
+                    &lt;p class="card-text"&gt;Some quick example text.&lt;/p&gt;
+                    &lt;a href="#" class="btn btn-primary"&gt;Go somewhere&lt;/a&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Bootstrap Navigation --&gt;
+&lt;nav class="navbar navbar-expand-lg navbar-dark bg-primary"&gt;
+    &lt;a class="navbar-brand" href="#"&gt;My Site&lt;/a&gt;
+    &lt;button class="navbar-toggler" type="button"&gt;
+        &lt;span class="navbar-toggler-icon"&gt;&lt;/span&gt;
+    &lt;/button&gt;
+&lt;/nav&gt;</code>
+                </div>
+                <div class="bootstrap-demo">
+                    <h4>Bootstrap Components Demo</h4>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin: 1rem 0;">
+                        <div class="demo-card">
+                            <h5 style="color: #007bff; margin-bottom: 0.5rem;">
+                                <i class="fas fa-star"></i> Featured Card
+                            </h5>
+                            <p>This demonstrates Bootstrap's card component with responsive design.</p>
+                            <button class="interactive-button">Learn More</button>
+                        </div>
+                        <div class="demo-card">
+                            <h5 style="color: #28a745; margin-bottom: 0.5rem;">
+                                <i class="fas fa-check-circle"></i> Success Card
+                            </h5>
+                            <p>Bootstrap makes it easy to create consistent, responsive layouts.</p>
+                            <button class="interactive-button">Get Started</button>
+                        </div>
+                        <div class="demo-card">
+                            <h5 style="color: #ffc107; margin-bottom: 0.5rem;">
+                                <i class="fas fa-lightbulb"></i> Info Card
+                            </h5>
+                            <p>Grid system automatically adapts to different screen sizes.</p>
+                            <button class="interactive-button">Discover</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- JavaScript Section -->
+        <section id="javascript" class="section">
+            <h2 class="section-title">JavaScript - Dynamic Interactivity</h2>
+            <div class="card">
+                <h3><i class="fab fa-js-square"></i> Modern JavaScript Features</h3>
+                <p>JavaScript brings interactivity and dynamic behavior to web pages, allowing content to update in real-time and respond to user actions.</p>
+                <p>Modern JavaScript (ES6+) includes features like arrow functions for concise syntax, promises and async/await for handling asynchronous operations, and modules for better code organization.</p>
+                <p>JavaScript is essential for front-end development as well as server-side programming using Node.js, making it a versatile language in full stack development.</p>
+                <div class="code-example" data-lang="JavaScript">
+                    <code>// Modern JavaScript Examples
+const apiUrl = 'https://api.example.com/data';
+// Arrow Functions and Promises
+const fetchData = async (url) => {
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
+};
+// DOM Manipulation
+const updateUI = (data) => {
+    const container = document.querySelector('#data-container');
+    container.innerHTML = `
+        &lt;h3&gt;${data.title}&lt;/h3&gt;
+        &lt;p&gt;${data.description}&lt;/p&gt;
+    `;
+};
+// Event Handling
+document.addEventListener('DOMContentLoaded', () => {
+    fetchData(apiUrl).then(updateUI);
+});
+// ES6 Classes
+class Calculator {
+    constructor() {
+        this.result = 0;
+    }
+    
+    add(num) {
+        this.result += num;
+        return this;
+    }
+    
+    multiply(num) {
+        this.result *= num;
+        return this;
+    }
+}</code>
+                </div>
+                <div class="demo-container">
+                    <h4>Interactive JavaScript Demo</h4>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem;">
+                        <div>
+                            <h5>Calculator</h5>
+                            <input type="number" id="calcInput1" placeholder="First number" style="width: 100%; padding: 0.5rem; margin: 0.25rem 0; border: 1px solid #ccc; border-radius: 5px;">
+                            <input type="number" id="calcInput2" placeholder="Second number" style="width: 100%; padding: 0.5rem; margin: 0.25rem 0; border: 1px solid #ccc; border-radius: 5px;">
+                            <div style="margin: 1rem 0;">
+                                <button class="interactive-button" onclick="calculate('add')">Add</button>
+                                <button class="interactive-button" onclick="calculate('multiply')">Multiply</button>
+                            </div>
+                            <div id="calcResult" style="font-weight: bold; color: #007bff;"></div>
+                        </div>
+                        
+                        <div>
+                            <h5>Color Generator</h5>
+                            <div id="colorBox" style="width: 100%; height: 100px; background: #667eea; border-radius: 10px; margin: 1rem 0; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">#667eea</div>
+                            <button class="interactive-button" onclick="generateRandomColor()">Generate Color</button>
+                        </div>
+                        
+                        <div>
+                            <h5>To-Do List</h5>
+                            <input type="text" id="todoInput" placeholder="Enter a task" style="width: 70%; padding: 0.5rem; border: 1px solid #ccc; border-radius: 5px;">
+                            <button class="interactive-button" onclick="addTodo()" style="width: 25%;">Add</button>
+                            <ul id="todoList" style="margin-top: 1rem; padding-left: 0; list-style: none;"></ul>
+                        </div>
+
+                        <!-- Added Motivational Quote Generator -->
+                        <div>
+                          <h5>Random Motivational Quote Generator</h5>
+                          <div id="quoteBox" style="min-height: 80px; background: #f1f1f1; border-radius: 10px; padding: 1rem; margin: 1rem 0; color: #333; font-style: italic; display: flex; align-items: center; justify-content: center; text-align: center;">
+                            Click the button to generate a motivational quote!
+                          </div>
+                          <button class="interactive-button" onclick="generateQuote()">New Quote</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- Footer Section -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About This Portfolio</h3>
+                <p>This portfolio showcases my skills in full-stack development as part of the CET138 course requirements.</p>
+                <p>It demonstrates proficiency in HTML, CSS, JavaScript, and responsive web design principles.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Connect With Me</h3>
+                <p>Feel free to reach out for collaborations or just a friendly hello.</p>
+                <div class="social-links">
+                    <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                    <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="Email"><i class="fas fa-envelope"></i></a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Navigation</h3>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="margin-bottom: 0.5rem;"><a href="#home" style="color: white; text-decoration: none;">Home</a></li>
+                    <li style="margin-bottom: 0.5rem;"><a href="#fullstack" style="color: white; text-decoration: none;">Full Stack</a></li>
+                    <li style="margin-bottom: 0.5rem;"><a href="#html" style="color: white; text-decoration: none;">HTML</a></li>
+                    <li style="margin-bottom: 0.5rem;"><a href="#css" style="color: white; text-decoration: none;">CSS</a></li>
+                    <li style="margin-bottom: 0.5rem;"><a href="#bootstrap" style="color: white; text-decoration: none;">Bootstrap</a></li>
+                    <li style="margin-bottom: 0.5rem;"><a href="#javascript" style="color: white; text-decoration: none;">JavaScript</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2025 Prajwal Gurung. All rights reserved.</p>
+        </div>
+    </footer>
+    
+    <script>
+        // Theme toggle functionality
+        function setupThemeToggle() {
+            const toggle = document.getElementById('themeToggle');
+            const icon = toggle.querySelector('i');
+            const text = toggle.querySelector('span');
+            
+            toggle.addEventListener('click', () => {
+                document.body.classList.toggle('light-mode');
+                if (document.body.classList.contains('light-mode')) {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                    text.textContent = 'Dark Mode';
+                } else {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                    text.textContent = 'Light Mode';
+                }
+            });
+        }
+        
+        // Particles Animation
+        function createParticles() {
+            const particlesContainer = document.querySelector('.particles');
+            const particleCount = 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+        // Scroll Indicator
+        function updateScrollIndicator() {
+            const scrolled = window.pageYOffset;
+            const maxHeight = document.body.scrollHeight - window.innerHeight;
+            const scrollPercent = scrolled / maxHeight;
+            document.querySelector('.scroll-indicator').style.transform = `scaleX(${scrollPercent})`;
+            
+            // Show/hide back to top button
+            const backToTop = document.getElementById('backToTop');
+            if (scrolled > 500) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        }
+        // Navigation scroll effect
+        function handleNavScroll() {
+            const nav = document.querySelector('nav');
+            if (window.pageYOffset > 100) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        }
+        // Mobile navigation toggle
+        function setupMobileNav() {
+            const mobileToggle = document.getElementById('mobileToggle');
+            const navLinks = document.getElementById('navLinks');
+            
+            mobileToggle.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+                mobileToggle.setAttribute('aria-expanded', 
+                    navLinks.classList.contains('active'));
+            });
+            
+            // Close mobile nav when clicking on links
+            const navItems = document.querySelectorAll('.nav-links a');
+            navItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    navLinks.classList.remove('active');
+                    mobileToggle.setAttribute('aria-expanded', 'false');
+                });
+            });
+        }
+        // Intersection Observer for section animations
+        function observeSections() {
+            const sections = document.querySelectorAll('.section');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        // Animate skill bars when section becomes visible
+                        const skillBars = entry.target.querySelectorAll('.skill-progress');
+                        skillBars.forEach(bar => {
+                            setTimeout(() => {
+                                bar.style.width = bar.getAttribute('data-width') + '%';
+                                bar.classList.add('animate');
+                            }, 200);
+                        });
+                    }
+                });
+            }, { threshold: 0.1 });
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+        }
+        // CSS Demo Box Animations
+        function setupCSSDemo() {
+            const demoBoxes = document.querySelectorAll('.demo-box');
+            demoBoxes.forEach((box, index) => {
+                box.addEventListener('mouseenter', () => {
+                    box.style.transform = 'scale(1.1) rotateZ(5deg)';
+                });
+                
+                box.addEventListener('mouseleave', () => {
+                    box.style.transform = 'scale(1) rotateZ(0deg)';
+                });
+                
+                box.addEventListener('click', () => {
+                    box.style.animation = 'bounce 0.6s ease';
+                    setTimeout(() => {
+                        box.style.animation = '';
+                    }, 600);
+                });
+            });
+        }
+        // Calculator Function
+        function calculate(operation) {
+            const num1 = parseFloat(document.getElementById('calcInput1').value) || 0;
+            const num2 = parseFloat(document.getElementById('calcInput2').value) || 0;
+            let result;
+            
+            switch(operation) {
+                case 'add':
+                    result = num1 + num2;
+                    break;
+                case 'multiply':
+                    result = num1 * num2;
+                    break;
+                default:
+                    result = 0;
+            }
+            
+            document.getElementById('calcResult').innerHTML = `Result: ${result}`;
+            document.getElementById('calcResult').style.animation = 'slideUp 0.5s ease';
+        }
+        // Random Color Generator
+        function generateRandomColor() {
+            const colors = [
+                '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7',
+                '#DDA0DD', '#98D8C8', '#F7DC6F', '#BB8FCE', '#85C1E9'
+            ];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            const colorBox = document.getElementById('colorBox');
+            
+            colorBox.style.background = `linear-gradient(45deg, ${randomColor}, ${colors[Math.floor(Math.random() * colors.length)]})`;
+            colorBox.textContent = randomColor;
+            colorBox.style.transform = 'scale(1.05)';
+            
+            setTimeout(() => {
+                colorBox.style.transform = 'scale(1)';
+            }, 200);
+        }
+        // To-Do List Functions
+        let todoCount = 0;
+        function addTodo() {
+            const input = document.getElementById('todoInput');
+            const todoList = document.getElementById('todoList');
+            const task = input.value.trim();
+            
+            if (task) {
+                todoCount++;
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <div style="background: #f8f9fa; padding: 0.5rem; margin: 0.25rem 0; border-radius: 5px; display: flex; justify-content: space-between; align-items: center; transition: all 0.3s ease;">
+                        <span>${task}</span>
+                        <button onclick="removeTodo(this)" style="background: #ff4757; color: white; border: none; padding: 0.25rem 0.5rem; border-radius: 3px; cursor: pointer;">Delete</button>
+                    </div>
+                `;
+                li.style.opacity = '0';
+                li.style.transform = 'translateX(-20px)';
+                todoList.appendChild(li);
+                
+                // Animate new item
+                setTimeout(() => {
+                    li.style.transition = 'all 0.3s ease';
+                    li.style.opacity = '1';
+                    li.style.transform = 'translateX(0)';
+                }, 10);
+                
+                input.value = '';
+            }
+        }
+        function removeTodo(button) {
+            const li = button.closest('li');
+            li.style.transform = 'translateX(100%)';
+            li.style.opacity = '0';
+            setTimeout(() => {
+                li.remove();
+            }, 300);
+        }
+        // HTML Form Handler
+        function setupFormHandler() {
+            const form = document.getElementById('htmlForm');
+            const result = document.getElementById('formResult');
+            
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const formData = new FormData(form);
+                const data = Object.fromEntries(formData);
+
+                result.innerHTML = `
+        <h5>Form Submitted Successfully!</h5>
+        <p style="color:black;"><strong>Name:</strong> ${data.name}</p>
+        <p style="color:black;"><strong>Email:</strong> ${data.email}</p>
+        <p style="color:black;"><strong>Message:</strong> ${data.message}</p>
+    `;
+    result.style.display = 'block';
+    result.style.animation = 'slideUp 0.5s ease';
+    form.reset();
+            });
+        }
+        // Smooth scrolling for navigation links
+        function setupSmoothScrolling() {
+            const navLinks = document.querySelectorAll('nav a[href^="#"], footer a[href^="#"]');
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = link.getAttribute('href');
+                    const targetSection = document.querySelector(targetId);
+                    if (targetSection) {
+                        targetSection.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+        }
+        // Motivational Quote Generator Function
+        function generateQuote() {
+          const quotes = [
+            "Believe you can and you're halfway there. – Theodore Roosevelt",
+            "Don’t watch the clock; do what it does. Keep going. – Sam Levenson",
+            "It always seems impossible until it’s done. – Nelson Mandela",
+            "You are never too old to set another goal or to dream a new dream. – C.S. Lewis",
+            "Success is not final, failure is not fatal: It is the courage to continue that counts. – Winston Churchill",
+            "The harder you work for something, the greater you’ll feel when you achieve it.",
+            "Dream bigger. Do bigger.",
+            "Don’t stop when you’re tired. Stop when you’re done.",
+            "Push yourself, because no one else is going to do it for you."
+          ];
+          const randomIndex = Math.floor(Math.random() * quotes.length);
+          const quoteBox = document.getElementById('quoteBox');
+          quoteBox.textContent = quotes[randomIndex];
+        }
+        // Add bounce animation to CSS
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes bounce {
+                0%, 20%, 60%, 100% { transform: translateY(0); }
+                40% { transform: translateY(-20px); }
+                80% { transform: translateY(-10px); }
+            }
+        `;
+        document.head.appendChild(style);
+        // Initialize everything when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            setupThemeToggle();
+            createParticles();
+            observeSections();
+            setupCSSDemo();
+            setupFormHandler();
+            setupSmoothScrolling();
+            setupMobileNav();
+            
+            // Add scroll event listeners
+            window.addEventListener('scroll', () => {
+                updateScrollIndicator();
+                handleNavScroll();
+            });
+            
+            // Add Enter key support for todo input
+            document.getElementById('todoInput').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    addTodo();
+                }
+            });
+            
+            // Initialize scroll indicator
+            updateScrollIndicator();
+        });
+        // Add some extra interactive features
+        document.addEventListener('mousemove', (e) => {
+            const particles = document.querySelectorAll('.particle');
+            const mouseX = e.clientX / window.innerWidth;
+            const mouseY = e.clientY / window.innerHeight;
+            
+            particles.forEach((particle, index) => {
+                if (index % 5 === 0) { // Only affect every 5th particle for performance
+                    const speed = 0.5;
+                    const x = (mouseX - 0.5) * speed;
+                    const y = (mouseY - 0.5) * speed;
+                    particle.style.transform += ` translate(${x}px, ${y}px)`;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
